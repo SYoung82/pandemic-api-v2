@@ -1,2 +1,2 @@
-export { getUsers } from './users';
+export { getUsers, getUser } from './users';
 export { health } from './health';

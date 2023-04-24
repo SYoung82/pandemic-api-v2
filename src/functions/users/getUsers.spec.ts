@@ -8,12 +8,13 @@ jest.mock('../../clients/cosmosClient');
 describe('getUsers', () => {
   test('/getUsers returns 200 and users', async () => {
     const mockRequest: HttpRequest = {} as unknown as HttpRequest;
+    const mockUsers = [{ id: '1', name: 'testName', games: [] }];
     CosmosContainerSingleton.getInstance = jest.fn().mockReturnValue({
       container: jest.fn().mockReturnThis(),
       items: {
         query: jest.fn().mockReturnThis(),
         fetchAll: jest.fn().mockResolvedValue({
-          resources: [{ id: '1', name: 'testName', games: [] }],
+          resources: mockUsers,
         }),
       },
     });
@@ -21,7 +22,7 @@ describe('getUsers', () => {
     const resp = await getUsers(mockRequest, mockContext);
 
     expect(resp.status).toBe(200);
-    expect(resp.body).toBeDefined();
+    expect(resp.jsonBody).toStrictEqual(mockUsers);
   });
 
   test('/getUsers returns 500 when db call fails', async () => {

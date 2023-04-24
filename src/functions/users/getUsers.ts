@@ -7,6 +7,24 @@ import {
 import { CosmosContainerSingleton } from '../../clients/cosmosClient';
 import { User, userDto } from './models/user';
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Get all users
+ *     description: Get all users
+ *     responses:
+ *       '200':
+ *          description: OK
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: '#/definitions/User'
+ */
 export async function getUsers(
   request: HttpRequest,
   context: InvocationContext
@@ -24,14 +42,14 @@ export async function getUsers(
       .items.query(query)
       .fetchAll();
 
-    return { body: JSON.stringify(results.map(userDto)), status: 200 };
+    return { jsonBody: results.map(userDto), status: 200 };
   } catch (error) {
     context.error(error);
     return { status: 500 };
   }
 }
 
-app.http('getUsers', {
+app.http('users', {
   methods: ['GET'],
   authLevel: 'anonymous',
   handler: getUsers,
