@@ -24,6 +24,8 @@ import { User, userDto } from './models/user';
  *                type: array
  *                items:
  *                  $ref: '#/definitions/User'
+ *        '500':
+ *          description: Internal Server Error
  */
 export async function getUsers(
   request: HttpRequest,
